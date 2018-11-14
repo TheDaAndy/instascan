@@ -31,6 +31,15 @@ class Camera {
       }
     };
 
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (iOS && this.name && (
+        /back/g.test(this.name.toLowerCase()) ||
+        /rück/g.test(this.name.toLowerCase()) ||
+        /world/g.test(this.name.toLowerCase())
+    )) {
+      constraints.video.facingMode = 'environment';
+    }
+
     this._stream = await Camera._wrapErrors(async () => {
       return await navigator.mediaDevices.getUserMedia(constraints);
     });
